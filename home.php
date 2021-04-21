@@ -12,6 +12,12 @@
 	<title>Home</title>
 	<link rel="stylesheet" href="gallery.css">
 	<style>
+		h1{
+			text-align: center;
+		}
+		p{
+			text-align: center;
+		}
 		footer {
 		  text-align: center;
 		  padding: 3px;
