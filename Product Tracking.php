@@ -47,34 +47,7 @@
 		<div class="container">
 	<!--Connect to database -->
 	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
-?>
-<br> <br>
-	<!-- write query-->
-	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "bagitdb";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
+require_once ("connection.php");
 $sql = "SELECT Products.barcode_id, Products.product_name, Products.product_id, Category.category_id
  FROM Products
  INNER JOIN Category ON Products.product_id = Category.product_id;";

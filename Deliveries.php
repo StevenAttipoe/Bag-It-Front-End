@@ -1,3 +1,5 @@
+<?php   session_start(); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <html>
@@ -48,52 +50,69 @@
             </div>
           </nav>
 		<div class="container">
+
+
+    <?php
+ if (isset($_SESSION['id']) && isset($_SESSION['username'])) {
+       if(isset($_GET['delete'])){
+           if($con->query("DELETE FROM details WHERE detail_id='$_GET[delete]' ")){
+               header('location:Deliveries.php');
+           }
+          }   
+       }
+    ?>
+
 	<!--Connect to database -->
 	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
+require_once ("connection.php");
 ?>
-<br> <br>
-	<!-- write query-->
-	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "universitydb";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
 
-$sql = "SELECT Details.delivery_id,Products.product_name, Details.product_id, Details.quantity,Details.total_price 
-FROM Details 
-RIGHT JOIN Products ON Products.product_id = details.product_id 
-WHERE delivery_id > 0;";
-$result = $conn->query($sql);
+<h3 text-center class="py-3 text-center">Deliveries</h1>
+   <table class="table">
+     <thead>
+            <th>Delivery Id</th>
+            <th>Product Name</th>
+            <th>Product Id</th>
+            <th>Quantity</th>
+            <th> Total Price</th>
+            
+     </thead>
+     <tbody>
 
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo "Delivery Id: " . $row["delivery_id"]. " - Product Name: " . $row["Products.product_name"]. " Product Id" . $row["product_id"]. " Quantity" . $row["quantity"]. "  Total Price: " . $row["total_price"]. "<br>";
-  }
-} else {
-  echo "0 results";
-}
-$conn->close();
-?>
+        <?php   
+        $sql = "SELECT Details.delivery_id, Products.product_name, Details.product_id, Details.quantity,Details.total_price 
+        FROM Details 
+        RIGHT JOIN Products ON Products.product_id = details.product_id 
+        WHERE delivery_id > 0;";
+        $result = $conn->query($sql); 
+        ?>
+        <?php
+        if ($result->num_rows > 0) {
+          // output data of each row
+          while($row = $result->fetch_assoc()) {
+            ?>
+            <tr>
+            <td data-label="Delivery Id"><?php echo $row['delivery_id']?></td>
+            <td data-label="Product Name"><?php echo $row['product_name'] ?></td>
+            <td data-label="Product Id"> <?php echo $row['product_id']?> </td> 
+            <td data-label="Quantity"><?php echo $row['quantity']?></td>
+            <td data-label=" Total Price"><?php echo $row['total_price']?></td>
+            <td> 
+            <a href="Deliveries.php?delete=<?php echo $row['detail_id']; ?>" class="btn btn-danger">Delete</a>
+            </td>
+     	  </tr>
+         <?php
+          }
+        } else {
+          echo "0 results";
+        }
+        $conn->close();
+        ?>
+
+     </tbody>
+   </table>
+
 	<!-- fetch an display result-->
 	    </div>
           

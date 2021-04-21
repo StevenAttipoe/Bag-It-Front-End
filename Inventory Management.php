@@ -50,33 +50,7 @@
 		<div class="container">
 	<!--Connect to database -->
 	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
-?>
-<br> <br>
-	<!-- write query-->
-	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "bagitdb";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+require_once ("connection.php");
 
 $sql = "Select SUM(product_avl), AVG(product_sld) FROM Warehouse Where period_sld like '%03%'";
 $result = $conn->query($sql);

@@ -50,53 +50,47 @@
 		<div class="container">
 	<!--Connect to database -->
 	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
+require_once ("connection.php");
 ?>
-<br> <br>
-	<!-- write query-->
-	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "bagitdb";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+<h3 text-center class="py-3 text-center">Product Categorization</h1>
+   <table class="table">
+     <thead>
+            
+            <th>Product Name</th>
+            <th>Category Name</th>
+            <th>Category Id</th>
+     </thead>
+     <tbody>
 
-$sql = "SELECT Products.product_name,Category.category_name, Category.category_id
- FROM Products
- INNER JOIN Category ON Products.product_id = Category.product_id
- GROUP BY product_name;";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo "Product Name: " . $row["product_name"]. "			Category Name " . $row["category_name"]. "			Category Id " . $row["category_id"]. "<br>";
-  }
-} else {
-  echo "0 results";
-}
-$conn->close();
-?>
+        <?php   
+        $sql = "SELECT Products.product_name,Category.category_name, Category.category_id
+        FROM Products
+        INNER JOIN Category ON Products.product_id = Category.product_id
+        GROUP BY product_name;";
+       $result = $conn->query($sql);
+        ?>
+        <?php
+        if ($result->num_rows > 0) {
+          // output data of each row
+          while($row = $result->fetch_assoc()) {
+            ?>
+            <tr>
+            <td data-label="Product Name"><?php echo $row['product_name'] ?></td>
+            <td data-label="Category Name"><?php echo $row['category_name'] ?></td>
+            <td data-label="Category Id"> <?php echo $row['category_id']?> </td> 
+     	  </tr>
+         <?php
+          }
+        } else {
+          echo "0 results";
+        }
+        $conn->close();
+        ?>
 	<!-- fetch an display result-->
 	    </div>
-          
-	
 </body>
+
 </html>
+
+

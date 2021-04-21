@@ -50,49 +50,43 @@
 		<div class="container">
 	<!--Connect to database -->
 	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
+require_once("connection.php")
 ?>
-<br> <br>
-	<!-- write query-->
-	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "bagitdb";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+<h3 text-center class="py-3 text-center">Product Barcode</h1>
+   <table class="table">
+     <thead>
+            <th>Barcode Id</th>
+            <th>Product Name</th>
+            <th>Product Id</th>
+            <th>Category Id</th>
+     </thead>
+     <tbody>
 
-$sql ="SELECT Products.barcode_id, Products.product_name, Products.product_id, Category.category_id
- FROM Products
- INNER JOIN Category ON Products.product_id = Category.product_id;";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo "Barcode Id: " . $row["barcode_id"]. " - Product Name: " . $row["product_name"]. "Product Id" . $row["product_id"]. "Category Id" . $row["category_id"]. "<br>";
-  }
-} else {
-  echo "0 results";
-}
-$conn->close();
-?>
+        <?php   
+       $sql ="SELECT Products.barcode_id, Products.product_name, Products.product_id, Category.category_id
+       FROM Products
+       INNER JOIN Category ON Products.product_id = Category.product_id;";
+      $result = $conn->query($sql);
+        ?>
+        <?php
+        if ($result->num_rows > 0) {
+          // output data of each row
+          while($row = $result->fetch_assoc()) {
+            ?>
+            <tr>
+            <td data-label="Barcode Id"><?php echo $row['barcode_id'] ?></td>
+            <td data-label="Product Name"><?php echo $row['product_name'] ?></td>
+            <td data-label="Product Id"><?php echo $row['product_id'] ?></td>
+            <td data-label="Category Id"> <?php echo $row['category_id']?> </td> 
+     	  </tr>
+         <?php
+          }
+        } else {
+          echo "0 results";
+        }
+        $conn->close();
+        ?>
 	<!-- fetch an display result-->
 	    </div>
           

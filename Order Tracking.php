@@ -50,52 +50,50 @@
 		<div class="container">
 	<!--Connect to database -->
 	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password);
-
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
+require_once ("connection.php");
 ?>
-<br> <br>
-	<!-- write query-->
-	<?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "bagitdb";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+<h3 text-center class="py-3 text-center">Order Tracking</h1>
+   <table class="table">
+     <thead>
+            <th>Warehouse Id</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Quantity</th>
+            <th> Total Price</th>
+            <th> Delivery Id</th>
+     </thead>
+     <tbody>
 
-$sql = "SELECT Orders.warehouse_id,Orders.date, Orders.time,Details.quantity, Details.total_price, Details.delivery_id
-FROM   Details,Orders
-WHERE  Orders.date IN
-   (SELECT Orders.date
-   FROM Orders
-   WHERE date like '%2021%');";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    echo  "Warehouse Id: " . $row["warehouse_id"]."  Date: " . $row["date"]."  Time: " . $row["time"]. " Quantity: " . $row["quantity"]. "  Total Price: " . $row["total_price"]. "Delivery Id: " . $row["delivery_id"]."<br>";
-  }
-} else {
-  echo "0 results";
-}
-$conn->close();
-?>
+        <?php   
+       $sql = "SELECT orders.warehouse_id, orders.date, orders.time,details.quantity, details.total_price, details.delivery_id
+       FROM   details,orders
+       WHERE  orders.date IN
+          (SELECT orders.date
+          FROM orders
+          WHERE date like '%2021%');";
+       $result = mysqli_query($conn, $sql);
+        ?>
+        <?php
+        if ($result->num_rows > 0) {
+          // output data of each row
+          while($row = $result->fetch_assoc()) {
+            ?>
+            <tr>
+            <td data-label="Warehouse Id"><?php echo $row['warehouse_id']?></td>
+            <td data-label="Date"><?php echo $row['date'] ?></td>
+            <td data-label="TIme"> <?php echo $row['time']?> </td> 
+            <td data-label="Quantity"><?php echo $row['quantity']?></td>
+            <td data-label=" Total Price"><?php echo $row['total_price']?></td>
+            <td data-label="Delivery Id"><?php echo $row['delivery_id']?></td>
+     	  </tr>
+         <?php
+          }
+        } else {
+          echo "0 results";
+        }
+        $conn->close();
+        ?>
 	<!-- fetch an display result-->
 	    </div>
           
